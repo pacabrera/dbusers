@@ -48,16 +48,14 @@ app.get('/', (req, res) => {
 app.post('/post', (req, res) => {
 
   const idea = new Idea;
-  idea.title = req.body.title;
-  idea.content = req.body.content;
-  idea.genre = req.body.genre;
-
+  idea.username = req.body.username;
+  idea.password = req.body.password;
 
   idea.save(err => {
     if (err) {
       res.send(err);
     }
-    res.json({ message: "data stored" });
+    res.json({ message: "Successfully Registered" });
   })
 })
 
@@ -73,61 +71,7 @@ app.get('/getideas', (req, res) => {
   })
 })
 
-// Reading watched movies Route
-app.get('/getWatched', (req, res) => {
 
-  Idea.find({isWatched:'false'}, (err, data) => {
-    if (err) {
-      res.send(err);
-    }
-    res.json(data);
-  })
-})
-
-// Deleting Particular idea Route
-app.delete('/delete/:id', (req, res) => {
-  Idea.remove({ _id: req.params.id }, (err) => {
-    if (err) {
-      res.send(err);
-    }
-    res.send("deleted")
-  });
-});
-
-// Updating Particular Route
-app.put('/update/:id', (req, res) => {
-  Idea.findOne({ _id: req.params.id }, (err, data) => {
-    if (err) {
-      res.send(err);
-    }
-    data.title = req.body.title;
-    data.content = req.body.content;
-    data.genre = req.body.genre;
-    data.save(err => {
-      if (err) {
-        res.send(err)
-      }
-      res.send('Succesfully Updated!')
-    })
-  })
-});
-
-// Rate Route
-app.put('/rate/:id', (req, res) => {
-  Idea.findOne({ _id: req.params.id }, (err, data) => {
-    if (err) {
-      res.send(err);
-    }
-    data.isWatched = true;
-   data.rating = req.body.rating;
-    data.save(err => {
-      if (err) {
-        res.send(err)
-      }
-      res.send('updated')
-    })
-  })
-});
 
 
 // Using port 5000 or environmental port
